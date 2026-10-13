@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101010" />
+  <meta name="description" content="Daymark — a calm, considered space for tasks, reminders, and the days in between." />
+  <title>Daymark — Tasks & Reminders</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <div class="sidebar-top">
+        <a class="brand" href="#" aria-label="Daymark home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>daymark</span>
+        </a>
+        <button class="mobile-close icon-button" type="button" aria-label="Close navigation" data-action="close-menu">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <div class="sidebar-rule"></div>
+      <p class="eyebrow sidebar-label">Workspace</p>
+      <nav class="nav-list" aria-label="Views">
+        <button class="nav-item is-active" type="button" data-view="today"><span class="nav-icon">◷</span><span>Today</span><span class="nav-count" id="todayCount">0</span></button>
+        <button class="nav-item" type="button" data-view="upcoming"><span class="nav-icon">↗</span><span>Upcoming</span><span class="nav-count" id="upcomingCount">0</span></button>
+        <button class="nav-item" type="button" data-view="completed"><span class="nav-icon">✓</span><span>Completed</span><span class="nav-count" id="completedCount">0</span></button>
+      </nav>
+
+      <div class="sidebar-rule"></div>
+      <div class="sidebar-section-head">
+        <p class="eyebrow sidebar-label">Lists</p>
+        <button class="text-button" type="button" data-action="new-list" aria-label="Add list">+</button>
+      </div>
+      <nav class="nav-list list-nav" aria-label="Task lists">
+        <button class="nav-item" type="button" data-list="Studio"><span class="list-dot dot-gold"></span><span>Studio</span><span class="nav-count" data-list-count="Studio">0</span></button>
+        <button class="nav-item" type="button" data-list="Personal"><span class="list-dot dot-lilac"></span><span>Personal</span><span class="nav-count" data-list-count="Personal">0</span></button>
+        <button class="nav-item" type="button" data-list="Reading list"><span class="list-dot dot-mint"></span><span>Reading list</span><span class="nav-count" data-list-count="Reading list">0</span></button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="mini-note">
+          <span class="signal-dot"></span>
+          <span>Local mode</span>
+        </div>
+        <p class="sidebar-footnote">Your notes stay in this browser.<br />Nothing leaves the room.</p>
+      </div>
+    </aside>
+
+    <div class="main-column">
+      <header class="topbar">
+        <button class="mobile-menu icon-button" type="button" aria-label="Open navigation" data-action="open-menu"><span aria-hidden="true">☰</span></button>
+        <div class="breadcrumb"><span class="breadcrumb-muted">Daymark</span><span class="breadcrumb-slash">/</span><span id="breadcrumbView">Today</span></div>
+        <div class="topbar-actions">
+          <button class="icon-button" type="button" data-action="focus-search" aria-label="Search tasks"><span class="topbar-icon">⌕</span></button>
+          <button class="avatar-button" type="button" aria-label="Open profile menu">AM</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="hero-row" aria-labelledby="pageTitle">
+          <div>
+            <p class="eyebrow" id="dateKicker">MONDAY · 14 OCTOBER 2026</p>
+            <h1 id="pageTitle">Make room<br /><em>for what matters.</em></h1>
+          </div>
+          <div class="hero-aside">
+            <p id="heroSummary">A clear view of the small things moving your week forward.</p>
+            <button class="primary-button" type="button" data-action="new-task">New task <span aria-hidden="true">↗</span></button>
+          </div>
+        </section>
+
+        <section class="date-strip" aria-label="Choose a day">
+          <button class="date-arrow" type="button" data-action="previous-day" aria-label="Previous day">←</button>
+          <div class="date-cells" id="dateCells"></div>
+          <button class="date-arrow" type="button" data-action="next-day" aria-label="Next day">→</button>
+        </section>
+
+        <section class="content-grid">
+          <div class="task-column">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow" id="agendaEyebrow">Your agenda</p>
+                <h2 id="agendaTitle">For today</h2>
+              </div>
+              <div class="view-tools">
+                <button class="filter-trigger" type="button" data-action="toggle-filters" aria-expanded="false">Filter <span class="filter-indicator" id="filterIndicator">0</span><span aria-hidden="true">⌄</span></button>
+              </div>
+            </div>
+            <div class="filter-panel" id="filterPanel" hidden>
+              <label class="filter-field">Status <select id="statusFilter"><option value="all">All tasks</option><option value="open">Open</option><option value="done">Completed</option></select></label>
+              <label class="filter-field">Priority <select id="priorityFilter"><option value="all">All priorities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+              <label class="filter-field">List <select id="listFilter"><option value="all">All lists</option><option value="Studio">Studio</option><option value="Personal">Personal</option><option value="Reading list">Reading list</option></select></label>
+              <button class="reset-button" type="button" data-action="reset-filters">Reset</button>
+            </div>
+            <div class="task-list" id="taskList" aria-live="polite"></div>
+            <div class="empty-state" id="emptyState" hidden>
+              <span class="empty-mark">—</span>
+              <h3>No marks here yet.</h3>
+              <p>Use the white button above to give this day a little shape.</p>
+            </div>
+            <button class="add-task-line" type="button" data-action="new-task"><span>+</span> Add another task</button>
+          </div>
+
+          <aside class="focus-column" aria-label="Weekly overview">
+            <div class="focus-card">
+              <div class="focus-card-head"><p class="eyebrow">Week in view</p><span class="focus-week" id="weekRange">14—20 OCT</span></div>
+              <div class="progress-rail"><span id="weekProgress"></span></div>
+              <div class="focus-stats"><span><strong id="weekDone">0</strong> done</span><span><strong id="weekTotal">0</strong> marked</span></div>
+              <div class="week-list" id="weekList"></div>
+            </div>
+            <div class="quote-card"><span class="quote-mark">“</span><p id="quoteText">The work is not to make time. It is to make a place for it.</p><span class="quote-author">— DAYMARK NOTE 01</span></div>
+          </aside>
+        </section>
+      </main>
+
+      <footer class="footer"><span>DAYMARK / 01</span><span>QUIETLY USEFUL, SINCE TODAY</span></footer>
+    </div>
+  </div>
+
+  <dialog class="task-dialog" id="taskDialog" aria-labelledby="dialogTitle">
+    <form method="dialog" id="taskForm">
+      <div class="dialog-top"><div><p class="eyebrow" id="dialogKicker">New mark</p><h2 id="dialogTitle">What needs a place?</h2></div><button class="dialog-close" type="button" data-action="close-dialog" aria-label="Close dialog">×</button></div>
+      <input type="hidden" id="taskId" />
+      <div class="form-fields">
+        <label class="form-field form-field-wide"><span>Task title</span><input id="taskTitle" name="title" required maxlength="120" placeholder="Give it a clear name" autocomplete="off" /></label>
+        <label class="form-field form-field-wide"><span>Details <small>optional</small></span><textarea id="taskDetails" name="details" rows="3" maxlength="280" placeholder="A little context goes a long way."></textarea></label>
+        <label class="form-field"><span>Date</span><input id="taskDate" name="date" type="date" required /></label>
+        <label class="form-field"><span>Reminder <small>optional</small></span><input id="taskTime" name="time" type="time" /></label>
+        <label class="form-field"><span>Priority</span><select id="taskPriority" name="priority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></label>
+        <label class="form-field"><span>List</span><select id="taskListName" name="list"><option value="Studio">Studio</option><option value="Personal">Personal</option><option value="Reading list">Reading list</option></select></label>
+        <label class="form-field form-field-wide"><span>Tags <small>separate with commas</small></span><input id="taskTags" name="tags" placeholder="focus, admin" autocomplete="off" /></label>
+      </div>
+      <div class="dialog-actions"><button class="delete-button" type="button" data-action="delete-task" hidden>Delete</button><div class="dialog-actions-right"><button class="cancel-button" type="button" data-action="close-dialog">Cancel</button><button class="primary-button" type="submit">Save task <span aria-hidden="true">↗</span></button></div></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
